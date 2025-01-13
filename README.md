@@ -140,7 +140,7 @@ Since the first available ranking is for 2003 -according to WRU-, I finally drop
 
 ![image](https://github.com/user-attachments/assets/eaf6c8fd-5959-4bc1-9828-dfbe3ca1d292)
 
-According to the returned score (`0.7889908`), such ***KNN Classification*** model **doesn't improve** the score of the ***Logistics Regression*** model (`0.8302752`). 
+According to the returned score (`78.90%`), such ***KNN Classification*** model **doesn't improve** the score of the ***Logistics Regression*** model (`83.03%`). 
 
 ## More insights
 
