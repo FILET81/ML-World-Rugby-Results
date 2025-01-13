@@ -5,6 +5,8 @@ The main purpose of this project was to practice an initial **Machine Learning**
 
 Specifically, a ***Logistic Regression*** model...along with a ***prediction*** showing the probability of the "***home_team***" to win the match.
 
+The score of the ***Logistic Regression*** model was also compared to the returned by a ***KNN Classification*** model.
+
 ## Data Preparation
 
 **1**. I looked for a dataset on Kaggle. 
@@ -17,7 +19,7 @@ I took one having info regarding the **"Rugby Results"** of most important teams
 
 ![Missing matches 2024](Missing-matches-2024.png)
 
-**4**. I created a new column "***score_diff***", being the subtraction of column "***home_score***" and column "***away_score***".
+**4**. I created a new column "***score_diff***", being the subtraction of both columns "***home_score***" and "***away_score***".
 
 **5**. I did few vizzes (Hitsplots and Boxplots) of the above mentioned columns in order to check the corresponding data distribution; and consider potential *Transformations*, *Normalizations*, etc.
 
@@ -25,9 +27,11 @@ I took one having info regarding the **"Rugby Results"** of most important teams
 ![Boxplot](Boxplot-away_score.png)
 ![Histplot](Histplot-score_diff.png)
 
-After checking the final outcome of the project, I discarded *Transformations* in both columns "***home_score***" and "***away_score***"; since such columns were finally dropped.
+After checking the final outcome of the project, I discarded *Transformations* in both columns since the difference wasn't significant; in addition, since column "***away_score***" was finally dropped for computation purposes.
 
 **6**. I also explored data in columns "***stadium***", "***competition***" or "***country***"; such columns were standardized later on.
+
+## WebScraping
 
 **7**. I webscraped the site ***www.stadiumdb.com*** with ***BeautifulSoup*** in order to get the stadiums' capacities; and join such info in the original dataset:
   - The webscraping was done for each country having an stadium in the original dataset -> Argentina, South Africa, New Zealand, Japan, France, England, Italy, Singapore, etc.
@@ -40,6 +44,8 @@ After checking the final outcome of the project, I discarded *Transformations* i
 **8**. Once all stadiums were webscraped (satdium's name, city and capacity), I created a DataFrame -***stadiums_final***- having all this info together.
 
 ![Final Stadiums](Final-Stadiums.png)
+
+## Data Standardization
 
 **9**. Afterwards, I carried out some *standardization* tasks:
   - Converting stadiums' capacities into **int64**.
@@ -56,7 +62,7 @@ After checking the final outcome of the project, I discarded *Transformations* i
 
 ![Merging Dropping](Merging-Dropping.png)
 
-**11**. I did few vizzes (Hitsplots and Scatterplots) for columns "***home_score***", "***away_score***" and "***score_diff***". I also did a **Correlation Matrix** for all variables having numerical data so far.
+**11**. I did few vizzes (Hitsplots and Scatterplots) between some independent potential variables (X) of the model; for instance, between column "***capacity***" and "***home_score***", "***away_score***" or "***score_diff***". I also did a **Correlation Matrix** for all variables having numerical data so far.
 
 ![Scatterplot](Scatterplot.png)
 
@@ -64,11 +70,11 @@ After checking the final outcome of the project, I discarded *Transformations* i
 
 ![Jet Lag Effect](Jet-Lag.png)
 
-**13**. I also included 2 new columns, "***home_ranking***" and "***away_ranking***", where the ranking of each team was returned for each of the years the match was played.
+**13**. I also included 2 new columns, "***home_ranking***" and "***away_ranking***", where the ranking of each team was returned for each of the years a given match was played.
 
 For simplicity reasons -not the best approach-, I took the ranking of each team at the end of such a given year.
 
-Since the first available ranking is for 2003 -according to WRU-, I finally dropped all matches played before that year too; creating a new Data Frame -***wru_final***-.
+Since the first available ranking is for 2003 -according to WRU-, I finally dropped all matches played before that year too; creating a new DataFrame -***wru_final***-.
 
 ![Rankings](Ranking-1.png)
 ![Rankings](Ranking-2.png)
@@ -84,36 +90,12 @@ Since the first available ranking is for 2003 -according to WRU-, I finally drop
 
   ![Dummies](Dummies.png)
 
-  - **14.3**. I did a **FIRST version** of the model, where I considered all numerical and categorical variables appearing in my ultimate dataset ***wru_final***:
-    - I **defined** both all *independent variables (X)* - all but "***home_win***"- and the *dependent variable (y)* -"***home_win***"-.
-    - I **split** the data between *train* and *test* for both all *independent variables (X)* and the *dependent variable (y)*.
+  - **14.3**. I also did a couple of scatterplots between both the "***home_score***" and "***away_score***" (*independent variables*), and the "***home_win***" (*dependent variable*) to see the corresponding data distribution.
 
-    ![Model Variables](Model-Variables.png)
+  - **14.4**. In order to get a reference score for the model, I computed the "***home_win***" / "***total matches***" ratio -> `59.32%`.
 
-    - I **defined** the model.
-    - I **scored** the model.
-
-    ![Model](Model-1.png)
-
-    - I printed a **Confusion matrix** of the model.
-
-    ![Confusion Matrix](Confusion-Matrix-1.png)
-
-    - I printed the **metrics** -Precision, Recall, F1-Score- of the model.
-
-    ![Metrics](Metrics-1.png)
-
-    - I printed the **ROC curve** of the model.
-
-    ![ROC Curve](ROC-Curve-1.png)
-
-    - I finally played with some **predictions** of the model.
-
-    ![Predictions](Predictions-1.png)
-
-**15**. Since such a *first version* of the model was **too perfect** -there are no perfect models!-, I decided to do a **SECOND version** where: 
-  - **15.1**. I dropped few more variables, since they seemed to be not significant or redundant; for instance, "***home_score***", "***away_score***", "***world_cup*** or "***score_diff***".
-  - **15.2**. I run same steps I did for the *first version*; meaning:
+  - **14.5**. I did a version of the model, where from my ultimate dataset ***wru_final***:
+    - I dropped some variables since they seemed to be not significant or redundant; for instance, "***home_score***", "***away_score***", "***world_cup***", "***score_diff***" or "****city***".
     - I **defined** both all *independent variables (X)* - all but "***home_win***"- and the *dependent variable (y)* -"***home_win***"-.
     - I **split** the data between *train* and *test* for both all *independent variables (X)* and the *dependent variable (y)*.
     - I **defined** the model.
@@ -138,36 +120,11 @@ Since the first available ranking is for 2003 -according to WRU-, I finally drop
     ![Predictions](Predictions-2.1.png)
     ![Predictions](Predictions-2.2.png)
 
-**16**. Altough such a *second version* seemed to be the most realistic according to the available data, I tried a **THIRD version** where:
-  - **16.1**. I also dropped "***capacity***" in order to check its impact.
+**15**. I applyed a new model, based on ***KNN Classification***, in order to compare the resulting score with the previous ***Logistics Regression*** model; as well as with the initially computed "***home_win***" / "***total matches***" ratio.
 
-  ![Version](Version-3.png)
+## More insights
 
-  - **16.2**. Once again, I run same steps I did for both the *first version* and the *second version*; meaning:
-    - I **defined** both all *independent variables (X)* - all but "***home_win***"- and the *dependent variable (y)* -"***home_win***"-.
-    - I **split** the data between *train* and *test* for both all *independent variables (X)* and the *dependent variable (y)*.
-    - I **defined** the model.
-    - I **scored** the model.
-
-    ![Model](Model-3.png)
-
-    - I printed a **Confusion matrix** of the model.
-
-    ![Confusion Matrix](Confusion-Matrix-3.png)
-
-    - I printed the **metrics** -Precision, Recall, F1-Score- of the model.
-
-    ![Metrics](Metrics-3.png)
-
-    - I printed the **ROC curve** of the model.
-
-    ![ROC Curve](ROC-Curve-3.png)
-
-    - I finally played with some **predictions** of the model too.
-
-All in all, there was no significant difference between ***second version*** and ***third version***!!!
-
-**17**. To finish this exercise, I also took some insights based on the data out of the ultimate dataset; for instance:
+**16**. To finish this exercise, I also took some **insights** based on the data out of the ultimate dataset; for instance:
   - Split of the jet-lag effect by country.
 
   ![Insights](Insight-1.png)
@@ -184,3 +141,5 @@ All in all, there was no significant difference between ***second version*** and
 
   ![Insights](Insight-4.png)
   ![Insights](Insight-5.png)
+
+  - Minimum, maximum and mean "***score_diff***" by "***home_team***", and each "***away_team***".
